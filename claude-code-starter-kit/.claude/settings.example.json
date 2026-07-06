@@ -1,0 +1,68 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(secrets/**)",
+      "Read(**/*secret*)",
+      "Read(**/*private*)",
+      "Bash(rm -rf*)",
+      "Bash(sudo*)",
+      "Bash(chmod 777*)",
+      "Bash(curl * | sh)",
+      "Bash(wget * | sh)",
+      "Bash(*production*)",
+      "Bash(*prod*)"
+    ],
+    "ask": [
+      "Bash(npm install*)",
+      "Bash(pnpm add*)",
+      "Bash(yarn add*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git checkout*)",
+      "Bash(git reset*)",
+      "Bash(git clean*)",
+      "Bash(docker*)",
+      "Bash(kubectl*)",
+      "Bash(helm*)",
+      "Bash(terraform*)"
+    ],
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(npm run lint)",
+      "Bash(npm run typecheck)",
+      "Bash(npm test)",
+      "Bash(npm run build)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Files changed. Run lint/typecheck/tests before finishing.'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Before ending: update docs/PROGRESS.md and report validation commands actually run.'"
+          }
+        ]
+      }
+    ]
+  }
+}
